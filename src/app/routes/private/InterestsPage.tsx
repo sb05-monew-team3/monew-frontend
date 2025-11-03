@@ -49,6 +49,7 @@ export default function InterestsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasNext, setHasNext] = useState(false);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [nextAfter, setNextAfter] = useState<string | null>(null);
 
   const observerRef = useRef<IntersectionObserver>(null);
   const lastElementRef = useRef<HTMLDivElement>(null);
@@ -93,6 +94,7 @@ export default function InterestsPage() {
       setInterests(response.content);
       setHasNext(response.hasNext);
       setNextCursor(response.nextCursor);
+      setNextAfter(response.nextAfter);
     } catch (error) {
       console.error("API 에러:", error);
     } finally {
@@ -111,12 +113,14 @@ export default function InterestsPage() {
         direction,
         limit: parseInt(limit),
         cursor: nextCursor || undefined,
+        after: nextAfter || undefined
       };
 
       const response = await getInterests(params, userId);
       setInterests((prev) => [...prev, ...response.content]);
       setHasNext(response.hasNext);
       setNextCursor(response.nextCursor);
+      setNextAfter(response.nextAfter);
     } catch (error) {
       console.error("API 에러:", error);
     } finally {
@@ -131,6 +135,7 @@ export default function InterestsPage() {
     hasNext,
     isLoading,
     nextCursor,
+    nextAfter
   ]);
 
   useEffect(() => {

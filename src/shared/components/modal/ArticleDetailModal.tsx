@@ -49,6 +49,7 @@ export default function ArticleDetailModal({
   const [isLoading, setIsLoading] = useState(false);
   const [hasNext, setHasNext] = useState(false);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [nextAfter, setNextAfter] = useState<string | null>(null);
 
   const observerRef = useRef<IntersectionObserver>(null);
   const lastElementRef = useRef<HTMLDivElement>(null);
@@ -88,6 +89,7 @@ export default function ArticleDetailModal({
       setComments(response.content);
       setHasNext(response.hasNext);
       setNextCursor(response.nextCursor);
+      setNextAfter(response.nextAfter);
     } catch (error) {
       console.error(error);
     } finally {
@@ -107,11 +109,13 @@ export default function ArticleDetailModal({
         direction,
         limit,
         cursor: nextCursor || undefined,
+        after: nextAfter || undefined
       };
       const response = await getComments(params, userId);
       setComments((prev) => [...prev, ...response.content]);
       setHasNext(response.hasNext);
       setNextCursor(response.nextCursor);
+      setNextAfter(response.nextAfter);
     } catch (error) {
       console.error(error);
     } finally {
@@ -122,6 +126,7 @@ export default function ArticleDetailModal({
     direction,
     limit,
     nextCursor,
+    nextAfter,
     article,
     hasNext,
     isLoading,

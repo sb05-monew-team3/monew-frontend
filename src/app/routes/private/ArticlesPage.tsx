@@ -91,6 +91,7 @@ export default function ArticlesPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasNext, setHasNext] = useState(false);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [nextAfter, setNextAfter] = useState<string | null>(null);
 
   const observerRef = useRef<IntersectionObserver>(null);
   const lastElementRef = useRef<HTMLDivElement>(null);
@@ -151,6 +152,7 @@ export default function ArticlesPage() {
       const response = await getArticles(params, userId);
       setHasNext(response.hasNext);
       setNextCursor(response.nextCursor);
+      setNextAfter(response.nextAfter);
       setArticles(response.content);
     } catch (error) {
       console.error(error);
@@ -185,6 +187,7 @@ export default function ArticlesPage() {
         direction,
         limit: parseInt(limit),
         cursor: nextCursor || undefined,
+        after: nextAfter || undefined,
         sourceIn: sourceInArray.length > 0 ? sourceInArray : undefined,
       };
 
@@ -192,6 +195,7 @@ export default function ArticlesPage() {
       setArticles((prev) => [...prev, ...response.content]);
       setHasNext(response.hasNext);
       setNextCursor(response.nextCursor);
+      setNextAfter(response.nextAfter);
     } catch (error) {
       console.error(error);
     } finally {
@@ -209,6 +213,7 @@ export default function ArticlesPage() {
     hasNext,
     isLoading,
     nextCursor,
+    nextAfter,
     sourceInParam,
   ]);
 
@@ -289,6 +294,7 @@ export default function ArticlesPage() {
     if (selectedInterestData) {
       setSelectedInterest(selectedInterestData);
       setNextCursor(null);
+      setNextAfter(null);
       setHasNext(false);
     }
   };
@@ -329,6 +335,7 @@ export default function ArticlesPage() {
     });
     setSelectedInterest(undefined);
     setNextCursor(null);
+    setNextAfter(null);
     setHasNext(false);
   };
 
@@ -346,6 +353,7 @@ export default function ArticlesPage() {
         return newParams;
       });
       setNextCursor(null);
+      setNextAfter(null);
       setHasNext(false);
     }
   }, [sortValue]);
@@ -364,6 +372,7 @@ export default function ArticlesPage() {
         return newParams;
       });
       setNextCursor(null);
+      setNextAfter(null);
       setHasNext(false);
     }
   }, [directionValue]);
@@ -383,6 +392,7 @@ export default function ArticlesPage() {
           return newParams;
         });
         setNextCursor(null);
+        setNextAfter(null);
         setHasNext(false);
       }
     }
@@ -419,6 +429,7 @@ export default function ArticlesPage() {
         return newParams;
       });
       setNextCursor(null);
+      setNextAfter(null);
       setHasNext(false);
     }
   }, [fromDate, toDate]);

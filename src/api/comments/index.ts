@@ -62,8 +62,13 @@ export async function deleteLikeComment(
 }
 
 /* 댓글 논리 삭제 */
-export async function deleteComment(commentId: CommentId): Promise<void> {
-  await http.delete<void>(`/comments/${commentId}`);
+export async function deleteComment(
+  commentId: CommentId,
+  requestUserId: UserId,
+): Promise<void> {
+  await http.delete<void>(`/comments/${commentId}`, {
+    headers: { "Monew-Request-User-ID": requestUserId },
+  });
 }
 
 /* 댓글 물리 삭제 */

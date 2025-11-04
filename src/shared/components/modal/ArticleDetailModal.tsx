@@ -239,7 +239,7 @@ export default function ArticleDetailModal({
       message: "정말 삭제하시겠습니까?",
       onConfirm: async () => {
         try {
-          await deleteComment(commentId);
+          await deleteComment(commentId, userId);
           toast.success("댓글이 삭제되었습니다.");
           await fetchInitialData();
         } catch (error) {
